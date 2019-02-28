@@ -1,0 +1,8 @@
+{% include 'header.html' %}
+<h4>{{project}} Pipelines</h4>
+<ul>
+{% for pipeline in pipelines %}
+<li><a href="/projects/{{project}}/pipelines/{{pipeline.id}}">{{pipeline.id}}</a> {{pipeline.status}}</li>
+{%endfor%}
+</ul>
+{% include 'footer.html' %}

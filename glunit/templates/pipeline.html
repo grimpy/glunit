@@ -1,0 +1,13 @@
+{% include 'header.html' %}
+<h4>Pipeline {{pipeline.id}}</h4>
+
+<div>Status: {{pipeline.status}}</div>
+<h3>Jobs</h3>
+<ul>
+{% for job in jobs %}
+<li><a href="/projects/{{project}}/jobs/{{job.id}}">{{job.id}}</a> Name: {{job.name}} Status: {{job.status}} Stage: {{job.stage}}</li>
+{%endfor%}
+</ul>
+
+{{xunit}}
+{% include 'footer.html' %}

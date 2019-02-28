@@ -1,0 +1,10 @@
+{% include 'header.html' %}
+<ul>
+<li>Name: {{job.name}}</li>
+<li>Stage: {{job.stage}}</li>
+<li>Status: {{job.status}}</li>
+<li>Creation time: {{job.created_at}}</li>
+<li>Duration: {{job.duration}}</li>
+</ul>
+{{unithtml|safe}}
+{% include 'footer.html' %}
