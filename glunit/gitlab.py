@@ -1,5 +1,6 @@
 import requests
 import urllib
+from flask import request
 
 class GitLab:
     def __init__(self, baseurl, token):
@@ -9,28 +10,25 @@ class GitLab:
 
     def list_pipelines(self, project):
         url = "{}/projects/{}/pipelines".format(self.baseurl, urllib.parse.quote(project, ""))
-        response = self.session.get(url)
+        return self.list(url)[0]
+
+    def list(self, url):
+        page = request.args.get('page', 1)
+        response = self.session.get(url, params={'page': page})
         response.raise_for_status()
-        return response.json()
+        return response.json(), response.headers['X-Total-Pages']
 
     def list_projects(self):
         url = "{}/projects/".format(self.baseurl)
-        response = self.session.get(url)
-        response.raise_for_status()
-        return response.json()
-
+        return self.list(url)[0]
 
     def list_group_projects(self, group):
         url = "{}/groups/{}/projects/".format(self.baseurl, group)
-        response = self.session.get(url)
-        response.raise_for_status()
-        return response.json()
+        return self.list(url)[0]
 
     def list_groups(self):
         url = "{}/groups/".format(self.baseurl)
-        response = self.session.get(url)
-        response.raise_for_status()
-        return response.json()
+        return self.list(url)[0]
 
     def get_pipeline(self, project, pipelineid):
         url = "{}/projects/{}/pipelines/{}".format(self.baseurl, urllib.parse.quote(project, ""), pipelineid)
@@ -40,9 +38,7 @@ class GitLab:
 
     def list_pipeline_jobs(self, project, pipelineid):
         url = "{}/projects/{}/pipelines/{}/jobs/".format(self.baseurl, urllib.parse.quote(project, ""), pipelineid)
-        response = self.session.get(url)
-        response.raise_for_status()
-        return response.json()
+        return self.list(url)
 
     def get_job(self, project, jobid):
         url = "{}/projects/{}/jobs/{}".format(self.baseurl, urllib.parse.quote(project, ""), jobid)

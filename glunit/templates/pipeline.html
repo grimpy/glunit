@@ -3,11 +3,24 @@
 
 <div>Status: {{pipeline.status}}</div>
 <h3>Jobs</h3>
-<ul>
+<table class="ui celled table">
+    <thead>
+        <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Stage</th>
+        </tr>
+    </thead>
+    <tbody>
 {% for job in jobs %}
-<li><a href="/projects/{{project}}/jobs/{{job.id}}">{{job.id}}</a> Name: {{job.name}} Status: {{job.status}} Stage: {{job.stage}}</li>
+    <tr>
+        <td><i class="{{job.icon}} icon"></i><a href="/projects/{{project}}/jobs/{{job.id}}">{{job.id}} {{job.name}}</a></td>
+        <td>{{job.status}}</td>
+        <td>{{job.stage}}</td>
+    </tr>
 {%endfor%}
-</ul>
+    </tbody>
+</table>
 
 {{xunit}}
 {% include 'footer.html' %}

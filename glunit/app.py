@@ -5,6 +5,7 @@ from junit2html.junit2html import Junit2HTML
 
 app = flask.Flask(__name__)
 app.secret_key = os.urandom(24)
+status_map = {"error":"errored", "failed":"exclamation", "skipped":"skipped", "success": "check"}
 
 
 def run():
@@ -37,6 +38,9 @@ def pipeline(projectid, pipelineid):
     gitlab = app.config["gitlab"]
     pipeline = gitlab.get_pipeline(projectid, pipelineid)
     jobs = gitlab.list_pipeline_jobs(projectid, pipelineid)
+    for job in jobs:
+        job['icon'] = status_map.get(job['status'], job['status'])
+    
     return flask.render_template("pipeline.html", pipeline=pipeline, jobs=jobs, project=projectid)
 
 @app.route("/projects/<projectid>/jobs/<jobid>")
