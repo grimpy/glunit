@@ -38,7 +38,7 @@ class GitLab:
 
     def list_pipeline_jobs(self, project, pipelineid):
         url = "{}/projects/{}/pipelines/{}/jobs/".format(self.baseurl, urllib.parse.quote(project, ""), pipelineid)
-        return self.list(url)
+        return self.list(url)[0]
 
     def get_job(self, project, jobid):
         url = "{}/projects/{}/jobs/{}".format(self.baseurl, urllib.parse.quote(project, ""), jobid)
