@@ -16,7 +16,15 @@ def run():
 
 @app.route("/", methods=["GET"])
 def index():
-    return flask.render_template("index.html")
+    gitlab = app.config["gitlab"]
+    groups = gitlab.list_groups()
+    return flask.render_template("index.html", groups=groups)
+
+@app.route("/groups/<groupid>", methods=["GET"])
+def group(groupid):
+    gitlab = app.config["gitlab"]
+    projects = gitlab.list_group_projects(groupid)
+    return flask.render_template("group.html", projects=projects)
 
 @app.route("/projects/<projectid>", methods=["GET"])
 def pipelines(projectid):

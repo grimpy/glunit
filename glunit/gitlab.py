@@ -13,6 +13,25 @@ class GitLab:
         response.raise_for_status()
         return response.json()
 
+    def list_projects(self):
+        url = "{}/projects/".format(self.baseurl)
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+
+    def list_group_projects(self, group):
+        url = "{}/groups/{}/projects/".format(self.baseurl, group)
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def list_groups(self):
+        url = "{}/groups/".format(self.baseurl)
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
     def get_pipeline(self, project, pipelineid):
         url = "{}/projects/{}/pipelines/{}".format(self.baseurl, urllib.parse.quote(project, ""), pipelineid)
         response = self.session.get(url)
