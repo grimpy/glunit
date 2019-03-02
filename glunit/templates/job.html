@@ -7,4 +7,12 @@
 <li>Duration: {{job.duration}}</li>
 </ul>
 {{unithtml|safe}}
+{% if trace %}
+<div class="ui inverted segment content">
+    <pre><code>
+      {{trace}}
+    </code>
+    </pre>
+</div>
+{% endif %}
 {% include 'footer.html' %}

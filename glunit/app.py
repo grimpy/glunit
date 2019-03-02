@@ -44,6 +44,7 @@ def job(projectid, jobid):
     gitlab = app.config["gitlab"]
     job = gitlab.get_job(projectid, jobid)
     unit = None
+    trace = None
     unithtml = ""
     for artifact in job['artifacts']:
         if artifact['file_type'] == 'junit':
@@ -53,5 +54,8 @@ def job(projectid, jobid):
         junit2html = app.config['junit2html']
         result = junit2html.parse_content(unit)
         unithtml = junit2html.generate_html(result)
-    return flask.render_template("job.html", pipeline=pipeline, job=job, project=projectid, unithtml=unithtml)
+    else:
+        trace = gitlab.get_job_trace(projectid, jobid).decode('utf8')
+
+    return flask.render_template("job.html", pipeline=pipeline, job=job, project=projectid, unithtml=unithtml, trace=trace)
 

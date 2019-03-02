@@ -51,8 +51,13 @@ class GitLab:
         return response.json()
 
     def get_job_artifact(self, project, jobid, artifact):
-        # /projects/:id/jobs/:job_id/artifacts/*artifact_path
         url = "{}/projects/{}/jobs/{}/artifacts/{}".format(self.baseurl, urllib.parse.quote(project, ""), jobid, artifact)
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.content
+
+    def get_job_trace(self, project, jobid):
+        url = "{}/projects/{}/jobs/{}/trace".format(self.baseurl, urllib.parse.quote(project, ""), jobid)
         response = self.session.get(url)
         response.raise_for_status()
         return response.content
