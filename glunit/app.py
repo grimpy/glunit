@@ -2,6 +2,7 @@ import flask
 import os
 from .gitlab import GitLab
 from junit2html.junit2html import Junit2HTML
+from ansi2html import Ansi2HTMLConverter
 
 app = flask.Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -59,7 +60,9 @@ def job(projectid, jobid):
         result = junit2html.parse_content(unit)
         unithtml = junit2html.generate_html(result)
     else:
-        trace = gitlab.get_job_trace(projectid, jobid).decode('utf8')
+        conv = Ansi2HTMLConverter(dark_bg=False, inline=True, markup_lines=True)
+        ansi = gitlab.get_job_trace(projectid, jobid).decode('utf8')
+        trace = conv.convert(ansi, full=False, ensure_trailing_newline=True)
 
     return flask.render_template("job.html", pipeline=pipeline, job=job, project=projectid, unithtml=unithtml, trace=trace)
 

@@ -8,11 +8,11 @@
 </ul>
 {{unithtml|safe}}
 {% if trace %}
-<div class="ui inverted segment content">
-    <pre><code>
-      {{trace}}
-    </code>
-    </pre>
+    <style type="text/css">
+#trace span { display: block; }
+    </style>
+<div class="ui inverted segment" id="trace">
+      {{trace|safe}}
 </div>
 {% endif %}
 {% include 'footer.html' %}
