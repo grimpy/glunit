@@ -1,8 +1,33 @@
-{% include 'header.html' %}
-<h4>{{project}} Pipelines</h4>
-<ul>
-{% for pipeline in pipelines %}
-<li><a href="/projects/{{project}}/pipelines/{{pipeline.id}}">{{pipeline.id}}</a> {{pipeline.status}}</li>
-{%endfor%}
-</ul>
-{% include 'footer.html' %}
+{% extends 'base.html' %}
+{% block content %}
+    <div class="ui breadcrumb">
+        <a class="section" href="/projects">Projects</a>
+        <i class="right chevron icon divider"></i>
+        <a class="section" href="/projects/{{project}}">{{project}}</a>
+        <i class="right chevron icon divider"></i>
+        <div class="active section">Pipelines</div>
+    </div><br><br>
+
+    <table class="ui single line table">
+        <thead>
+            <tr><th colspan="3">{{pipelines.pagination.count}}  Pipelines</th></tr>
+        </thead>
+        <tbody>
+            {% for pipeline in pipelines.data %}
+                <tr>
+                    <td>
+                        <i class="{{pipeline.status}} icon"></i>
+                        <a href="/projects/{{project}}/pipelines/{{pipeline.id}}">#{{pipeline.id}}</a>
+                    </td>
+                    <td>{{pipeline.ref}}</td>        
+                    <td class="collapsing">{{pipeline.status|title}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% set pagination = pipelines.pagination %}
+    {% include 'pagination.html' %}
+  
+  
+{% endblock %}

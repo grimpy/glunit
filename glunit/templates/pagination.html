@@ -1,0 +1,39 @@
+<script>
+    function paginate(page){
+        var currenturl = window.location.href;
+        var url = new URL(currenturl);
+        url.searchParams.set("page", page);
+        window.location.href = url.href;
+    }
+</script>
+
+<div class="ui pagination stackable menu">
+    <a class="icon item {{'disabled' if not pagination.prev}}" onclick="paginate('{{pagination.prev}}')">
+        <i class="left arrow icon"></i>
+    </a>
+
+    {% if pagination.current|int > 1 %}
+        <a class="item" onclick="paginate('1')">1</a>
+    {% endif %}
+
+    {% if pagination.current|int > 2 %}
+        <a class="item">...</a>
+        <a class="item" onclick="paginate('{{pagination.current|int -1 }}')">{{pagination.current|int -1 }}</a>
+    {% endif %}
+
+    <a class="active item" onclick="paginate('{{pagination.current}}')">{{pagination.current|int}}</a>
+
+    {% if pagination.current|int <  pagination.pages|int - 1 %}
+        <a class="item" onclick="paginate('{{pagination.current|int + 1}}')">{{pagination.current|int + 1 }}</a>
+        <a class="item">...</a>
+    {% endif %}
+
+    {% if pagination.current|int <  pagination.pages|int %}
+        <a class="item" onclick="paginate('{{pagination.pages|int}}')">{{pagination.pages|int}}</a>
+    {% endif %} 
+    
+    <a class="icon item {{'disabled' if not pagination.next}}" onclick="paginate('{{pagination.next}}')">
+        <i class="right arrow icon"></i>
+    </a>
+</div>
+

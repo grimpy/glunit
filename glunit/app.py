@@ -26,7 +26,7 @@ def index():
 def group(groupid):
     gitlab = app.config["gitlab"]
     projects = gitlab.list_group_projects(groupid)
-    return flask.render_template("group.html", projects=projects)
+    return flask.render_template("group.html", projects=projects, groupid=groupid)
 
 @app.route("/projects/<projectid>", methods=["GET"])
 def pipelines(projectid):
@@ -38,10 +38,7 @@ def pipelines(projectid):
 def pipeline(projectid, pipelineid):
     gitlab = app.config["gitlab"]
     pipeline = gitlab.get_pipeline(projectid, pipelineid)
-    jobs = gitlab.list_pipeline_jobs(projectid, pipelineid)
-    for job in jobs:
-        job['icon'] = status_map.get(job['status'], job['status'])
-    
+    jobs = gitlab.list_pipeline_jobs(projectid, pipelineid)    
     return flask.render_template("pipeline.html", pipeline=pipeline, jobs=jobs, project=projectid)
 
 @app.route("/projects/<projectid>/jobs/<jobid>")

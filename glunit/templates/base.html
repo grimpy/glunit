@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.js"></script>
+        <style>
+            .ui.failed.segment {
+                border-top: 2px solid #db2828;
+            }
+            .ui.success.segment {
+                border-top: 2px solid #21ba45;
+            }
+            i.icon.success:before{content: "\f00c"; color: #17A589}
+            i.icon.failed:before {content: "\f00d"; color: #CD6155}
+            i.icon.skipped:before, i.icon.canceled:before {content: "\f05e"; color: #BFC9CA}
+
+        </style>
+    </head>
+    <body>
+        <div class="ui attached borderless inverted menu">
+            <div class="ui container">
+                <a class="header item" href="/">GLUnit</a>
+            </div>
+        </div>
+        <div class="ui container basic segment" style="margin-top: 30px !important;">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>
