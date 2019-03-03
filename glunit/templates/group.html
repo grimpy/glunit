@@ -1,8 +1,25 @@
-{% include 'header.html' %}
-<h4>Projects</h4>
-<ul>
-{% for project in projects %}
-<li><a href="/projects/{{project.id}}">{{project.name_with_namespace}}</a></li>
-{%endfor%}
-</ul>
-{% include 'footer.html' %}
+{% extends 'base.html' %}
+{% block content %}
+    <div class="ui breadcrumb">
+        <a class="section" href="/">Groups</a>
+        <i class="right chevron icon divider"></i>
+        <a class="section" href="/groups/{{groupid}}">{{groupid}}</a>
+        <i class="right chevron icon divider"></i>
+        <div class="active section">Projects</div>
+    </div><br><br>
+
+    <div class="ui four column stackable grid">
+        {% for project in projects.data %}
+            <div class="column">
+                <a class="ui card" href="/projects/{{project.id}}">
+                    <div class="content">
+                        <div class="header">{{project.name}}</div>
+                        <div class="meta">Project Id: {{project.id}}</div>
+                        <div class="description">{{project.description or "No description"}}</div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

@@ -1,4 +1,5 @@
-{% include 'header.html' %}
+{% extends 'base.html' %}
+{% block content %}
 <ul>
 <li>Name: {{job.name}}</li>
 <li>Stage: {{job.stage}}</li>
@@ -8,11 +9,12 @@
 </ul>
 {{unithtml|safe}}
 {% if trace %}
-    <style type="text/css">
-#trace span { display: block; }
-    </style>
-<div class="ui inverted segment" id="trace">
-      {{trace|safe}}
-</div>
+  <div class="ui inverted segment content">
+      <pre><code>
+        {{trace}}
+      </code>
+      </pre>
+  </div>
 {% endif %}
-{% include 'footer.html' %}
+{% endblock %}
+

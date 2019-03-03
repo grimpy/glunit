@@ -1,8 +1,22 @@
-{% include 'header.html' %}
-<h4>Groups</h4>
-<ul>
-{% for group in groups %}
-<li><a href="/groups/{{group.id}}">{{group.name}}</a></li>
-{%endfor%}
-</ul>
-{% include 'footer.html' %}
+{% extends 'base.html' %}
+{% block content %}
+   
+        <div class="ui breadcrumb">
+            <div class="active section">Groups</div>
+        </div><br><br>
+
+        <div class="ui four column stackable grid">
+            {% for group in groups.data %}
+                <div class="column">
+                    <a class="ui card" href="/groups/{{group.id}}">
+                        <div class="content">
+                            <div class="header">{{group.full_name}}</div>
+                            <div class="meta">Group Id: {{group.id}}</div>
+                            <div class="description">{{group.description or "No description"}}</div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+{% endblock %}
