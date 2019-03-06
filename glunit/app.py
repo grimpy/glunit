@@ -8,13 +8,11 @@ app = flask.Flask(__name__)
 app.secret_key = os.urandom(24)
 status_map = {"error":"errored", "failed":"exclamation", "skipped":"skipped", "success": "check"}
 
-
 def run():
     app.config.from_object('config')
     app.config['gitlab'] = GitLab(app.config["GITLAB_URL"], app.config["GITLAB_TOKEN"])
     app.config['junit2html'] = Junit2HTML()
     app.run(host="0.0.0.0", port=8080, debug=False)
-
 
 @app.route("/", methods=["GET"])
 def index():
@@ -38,15 +36,11 @@ def pipelines(projectid):
 def pipeline(projectid, pipelineid):
     gitlab = app.config["gitlab"]
     pipeline = gitlab.get_pipeline(projectid, pipelineid)
-    jobs = gitlab.list_pipeline_jobs(projectid, pipelineid)    
-    return flask.render_template("pipeline.html", pipeline=pipeline, jobs=jobs, project=projectid)
-
-@app.route("/projects/<projectid>/jobs/<jobid>")
-def job(projectid, jobid):
-    gitlab = app.config["gitlab"]
+    jobs = gitlab.list_pipeline_jobs(projectid, pipelineid)
+    jobid = flask.request.args.get("job", jobs["data"][0]["id"])
     job = gitlab.get_job(projectid, jobid)
-    unit = None
-    trace = None
+    
+    unit = trace = None
     unithtml = ""
     for artifact in job['artifacts']:
         if artifact['file_type'] == 'junit':
@@ -61,5 +55,4 @@ def job(projectid, jobid):
         ansi = gitlab.get_job_trace(projectid, jobid).decode('utf8')
         trace = conv.convert(ansi, full=False, ensure_trailing_newline=True)
 
-    return flask.render_template("job.html", pipeline=pipeline, job=job, project=projectid, unithtml=unithtml, trace=trace)
-
+    return flask.render_template("pipeline.html", pipeline=pipeline, jobs=jobs, project=projectid, job=job, unithtml=unithtml, trace=trace)

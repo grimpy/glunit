@@ -4,6 +4,11 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('.menu .item').tab();
+            });
+        </script>
         <style>
             .ui.failed.segment {
                 border-top: 2px solid #db2828;
@@ -14,7 +19,7 @@
             i.icon.success:before{content: "\f00c"; color: #17A589}
             i.icon.failed:before {content: "\f00d"; color: #CD6155}
             i.icon.skipped:before, i.icon.canceled:before {content: "\f05e"; color: #BFC9CA}
-
+            .ui.container{width: 80% !important}
         </style>
     </head>
     <body>
