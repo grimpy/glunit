@@ -1,15 +1,39 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h4>Pipeline {{pipeline.id}}</h4>
-    <div>Status: {{pipeline.status}}</div>
-    <h3>Jobs</h3>
-    <ul>
-    {% for job in jobs.data %}
-    <li><a href="/projects/{{project}}/jobs/{{job.id}}">{{job.id}}</a> Name: {{job.name}} Status: {{job.status}} Stage: {{job.stage}}</li>
-    {% endfor %}
-    </ul>
-    {{xunit}}
+
+    <div class="ui breadcrumb">
+        <a class="section" href="/projects/{{project}}">Pipelines</a>
+        <i class="right chevron icon divider"></i>
+        <a class="section" href="/projects/{{project}}/pipelines/{{pipeline.id}}">{{pipeline.id}}</a>
+    </div><br><br>
+
+    <div class="ui stackable grid">
+        <div class="two wide column">
+            <div class="ui vertical pointing menu">
+                {% for jobitem in jobs.data %}
+                    <a class="item {{'active' if job.id == jobitem.id }}" href="?job={{jobitem.id}}">
+                        <i class="{{jobitem.status}} icon"></i>
+                        {{jobitem.name}}
+                    </a>
+                {% endfor %}
+            </div>
+            {% set pagination = jobs.pagination %}
+            {% include 'pagination.html' %}
+        </div>
+
+        <div class="fourteen wide column">
+            {{unithtml|safe}}
+            {% if trace %}
+                <div class="ui basic segment container" style="margin-top:30px; width:80% !important">
+                    <h2>{{job.name|title}}</h2>
+                    <div class="ui inverted segment content">
+                        <pre><code>{{trace|safe}}</code></pre>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
 
 
