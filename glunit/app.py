@@ -49,10 +49,10 @@ def pipeline(projectid, pipelineid):
     if unit:
         junit2html = app.config['junit2html']
         result = junit2html.parse_content(unit)
-        unithtml = junit2html.generate_html(result)
-    else:
-        conv = Ansi2HTMLConverter(dark_bg=False, inline=True, markup_lines=True)
-        ansi = gitlab.get_job_trace(projectid, jobid).decode('utf8')
-        trace = conv.convert(ansi, full=False, ensure_trailing_newline=True)
+        unithtml = junit2html.generate_html(result, embed=True)
+
+    conv = Ansi2HTMLConverter(dark_bg=False, inline=True, markup_lines=True)
+    ansi = gitlab.get_job_trace(projectid, jobid).decode('utf8')
+    trace = conv.convert(ansi, full=False, ensure_trailing_newline=True)
 
     return flask.render_template("pipeline.html", pipeline=pipeline, jobs=jobs, project=projectid, job=job, unithtml=unithtml, trace=trace)

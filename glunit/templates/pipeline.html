@@ -9,10 +9,11 @@
     </div><br><br>
 
     <div class="ui stackable grid">
-        <div class="two wide column">
-            <div class="ui vertical pointing menu">
+        <div class="three wide column">
+            <h4>Jobs</h4>
+            <div class="ui vertical secondary menu">
                 {% for jobitem in jobs.data %}
-                    <a class="item {{'active' if job.id == jobitem.id }}" href="?job={{jobitem.id}}">
+                    <a name="job" class="item {{'active' if job.id == jobitem.id }}" href="?job={{jobitem.id}}">
                         <i class="{{jobitem.status}} icon"></i>
                         {{jobitem.name}}
                     </a>
@@ -22,16 +23,29 @@
             {% include 'pagination.html' %}
         </div>
 
-        <div class="fourteen wide column">
-            {{unithtml|safe}}
-            {% if trace %}
-                <div class="ui basic segment container" style="margin-top:30px; width:80% !important">
-                    <h2>{{job.name|title}}</h2>
-                    <div class="ui inverted segment content">
-                        <pre><code>{{trace|safe}}</code></pre>
+        <div class="thirteen wide column">
+            <div class="ui compact small right floated menu">
+                {% if unithtml %}
+                    <a name="view" class="item active" data-tab="html-tab">HTML</a>
+                {% endif %}
+                <a name="view" class="item {{'active' if not unithtml }}" data-tab="raw-tab">Raw</a>
+            </div><br><br>
+
+            <div class="ui container" style="width:100% !important">
+                {% if unithtml %}
+                    <div class="ui tab active" data-tab="html-tab">
+                        {{unithtml|safe}}
+                    </div>
+                {% endif %}
+                <div class="ui tab {{'active' if not unithtml }}" data-tab="raw-tab">
+                    <div class="ui basic segment">
+                        <h2>{{job.name|title}}</h2>
+                        <div class="ui inverted segment content">
+                            <pre><code>{{trace|safe}}</code></pre>
+                        </div>
                     </div>
                 </div>
-            {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}
