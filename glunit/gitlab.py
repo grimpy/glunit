@@ -46,6 +46,12 @@ class GitLab:
         response.raise_for_status()
         return response.json()
 
+    def get_project(self, project):
+        url = "{}/projects/{}".format(self.baseurl, urllib.parse.quote(project, ""))
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
     def list_pipeline_jobs(self, project, pipelineid):
         url = "{}/projects/{}/pipelines/{}/jobs/".format(self.baseurl, urllib.parse.quote(project, ""), pipelineid)
         return self.list(url)

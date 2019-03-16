@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="ui breadcrumb">
-        <a class="section" href="/projects">Projects</a>
+        <a class="section" href="/">Groups</a>
         <i class="right chevron icon divider"></i>
-        <a class="section" href="/projects/{{project}}">{{project}}</a>
+        <a class="section" href="/groups/{{project.namespace.id}}">{{project.namespace.name}}</a>
+        <i class="right chevron icon divider"></i>
+        <a class="section" href="/projects/{{project.id}}">{{project.name}}</a>
         <i class="right chevron icon divider"></i>
         <div class="active section">Pipelines</div>
     </div><br><br>
@@ -20,7 +22,7 @@
             {% for pipeline in pipelines.data %}
                 <tr>
                     <td>
-                        <a href="/projects/{{project}}/pipelines/{{pipeline.id}}">#{{pipeline.id}}</a>
+                        <a href="/projects/{{project.id}}/pipelines/{{pipeline.id}}">#{{pipeline.id}}</a>
                     </td>
                     <td>{{pipeline.ref}}</td>        
                     <td class="collapsing">

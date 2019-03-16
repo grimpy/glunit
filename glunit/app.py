@@ -30,12 +30,14 @@ def group(groupid):
 def pipelines(projectid):
     gitlab = app.config["gitlab"]
     pipelines = gitlab.list_pipelines(projectid)
-    return flask.render_template("project.html", pipelines=pipelines, project=projectid)
+    project = gitlab.get_project(projectid)
+    return flask.render_template("project.html", pipelines=pipelines, project=project)
 
 @app.route("/projects/<projectid>/pipelines/<pipelineid>")
 def pipeline(projectid, pipelineid):
     gitlab = app.config["gitlab"]
     pipeline = gitlab.get_pipeline(projectid, pipelineid)
+    project = gitlab.get_project(projectid)
     jobs = gitlab.list_pipeline_jobs(projectid, pipelineid)
     jobid = flask.request.args.get("job", jobs["data"][0]["id"])
     job = gitlab.get_job(projectid, jobid)
@@ -55,4 +57,4 @@ def pipeline(projectid, pipelineid):
     ansi = gitlab.get_job_trace(projectid, jobid).decode('utf8')
     trace = conv.convert(ansi, full=False, ensure_trailing_newline=True)
 
-    return flask.render_template("pipeline.html", pipeline=pipeline, jobs=jobs, project=projectid, job=job, unithtml=unithtml, trace=trace)
+    return flask.render_template("pipeline.html", pipeline=pipeline, jobs=jobs, project=project, job=job, unithtml=unithtml, trace=trace)
