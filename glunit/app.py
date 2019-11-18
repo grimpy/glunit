@@ -1,7 +1,7 @@
 import flask
 import os
 from .gitlab import GitLab
-from junit2html.junit2html import Junit2HTML
+from vjunit.vjunit import VJunit
 from ansi2html import Ansi2HTMLConverter
 
 app = flask.Flask(__name__)
@@ -11,7 +11,7 @@ status_map = {"error":"errored", "failed":"exclamation", "skipped":"skipped", "s
 def run():
     app.config.from_object('config')
     app.config['gitlab'] = GitLab(app.config["GITLAB_URL"], app.config["GITLAB_TOKEN"])
-    app.config['junit2html'] = Junit2HTML()
+    app.config['vjunit'] = VJunit()
     app.run(host="0.0.0.0", port=8080, debug=False)
 
 @app.route("/", methods=["GET"])
@@ -49,9 +49,9 @@ def pipeline(projectid, pipelineid):
             unit = gitlab.get_job_artifact(projectid, jobid, "{}.xml".format(jobid))
             break
     if unit:
-        junit2html = app.config['junit2html']
-        result = junit2html.parse_content(unit)
-        unithtml = junit2html.generate_html(result, embed=True)
+        vjunit = app.config['vjunit']
+        result = vjunit.parse_content(unit)
+        unithtml = vjunit.generate_html(result, embed=True)
 
     conv = Ansi2HTMLConverter(dark_bg=False, inline=True, markup_lines=True)
     ansi = gitlab.get_job_trace(projectid, jobid).decode('utf8')
